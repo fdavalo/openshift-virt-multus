@@ -1,0 +1,8 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: nad-1085
+  namespace: @namespace@
+spec:
+  config: >-
+    {"name":"nad-1085","type":"cnv-bridge","cniVersion":"0.3.1","bridge":"bridge-1085","macspoofchk":true,"ipam":{}}
