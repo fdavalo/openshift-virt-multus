@@ -1,0 +1,13 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: dv-blank
+  namespace: @namespace@
+spec:
+  source:
+    blank: {}
+  storage:
+    storageClassName: ocs-storagecluster-ceph-rbd
+    resources:
+      requests:
+        storage: 30Gi
