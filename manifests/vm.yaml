@@ -1,0 +1,65 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: @name@
+  namespace: @namespace@
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: dv-blank
+      spec:
+        source:
+          blank: {}
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+  running: true
+  template:
+    spec:
+      nodeSelector:
+        hardware: c7000
+      domain:
+        cpu:
+          cores: 2
+          sockets: 1
+          threads: 2
+        devices:
+          disks:
+            - bootOrder: 2
+              disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - bootOrder: 1
+              bridge: {}
+              macAddress: '@mac@'
+              model: virtio
+              name: nic-pxe1
+          networkInterfaceMultiqueue: true
+          rng: {}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        machine:
+          type: pc-q35-rhel8.6.0
+        resources:
+          requests:
+            memory: 8Gi
+      evictionStrategy: LiveMigrate
+      networks:
+        - multus:
+            networkName: nad-1085
+          name: nic-pxe1
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: dv-blank
+          name: rootdisk
+              name: cloudinitdisk     
