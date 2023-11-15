@@ -1,1 +1,1 @@
-# openshift-virt-pxe
+# openshift-virt-multus
